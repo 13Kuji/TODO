@@ -8,4 +8,4 @@ $id = $_POST['id'];
 $title = $_POST['title'];
 $text = $_POST['text'];
 mysqli_query($connect, "UPDATE task SET title = '$title' ,  text = '$text' WHERE id = '$id'");
-header('Location: /test_project/todo/');
+header('Location: /test_project/todo/api');

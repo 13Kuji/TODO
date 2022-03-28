@@ -7,7 +7,7 @@ require_once 'connect.php';
         echo $rows['title']."<br>";
         echo $rows['text']."<br>";
        echo $rows['time']."<br>"."<br>";
-       ?> <form action="update.php" method="post">
+       ?> <form action="update_view.php" method="post">
         <input type="hidden" name="id" value="<?= $rows['id'] ?>">
         <button type="submit">Update</button>
         </form>
