@@ -1,9 +1,16 @@
 <?php
 require_once ('connect.php');
-
+class update_exception extends Exception { }
+function error_update(){
+    throw new update_exception('Укажите название задачи!');
+}
 $id = $_POST['id'];
-$title = ($_POST['title'] == NULL) ? die("Нужно ввести название задачи!!!") : $_POST['title'];
-$text = ($_POST['text'] == NULL) ? "Описание отсутствует" : $_POST['text'];
+try{
+    $title = (empty($_POST['title'])) ? error_update() : $_POST['title'];
+    $text = (empty($_POST['text'])) ? "Описание отсутствует" : $_POST['text'];
+} catch (update_exception $e) {
+    echo 'Ошибка выполнения: ', $e->getMessage();
+}
 $stmt=$connect->prepare("UPDATE task SET title = :title ,  text = :text WHERE id = :id ");
 $stmt->bindParam(':title', $title);
 $stmt->bindParam(':text', $text);
