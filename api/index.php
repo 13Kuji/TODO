@@ -1,8 +1,9 @@
 <?php
-require_once 'connect.php';
+require_once 'include.php';
 
-foreach($connect->query('SELECT * FROM task') as $rows){
-    echo $rows['title']."<br>".$rows['text']."<br>".$rows['time']."<br>"."<br>";
+$sql='SELECT * FROM task';
+foreach(dbQuery($sql) as $rows){
+    echo  $rows['title']."<br>".$rows['text']."<br>".$rows['time']."<br>"."<br>";
     ?>  <form action = "update_view.php" method = "post">
             <input type = "hidden" name = "id" value = "<?= $rows['id'] ?>">
             <button type = "submit">Update</button>

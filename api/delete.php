@@ -1,8 +1,9 @@
 <?php
-require_once ('connect.php');
+require_once ('include.php');
 
 $id = $_POST['id'];
-$stmt = $connect->prepare("DELETE FROM task WHERE id = :id");
-$stmt->bindParam(':id', $id);
-$stmt->execute();
+$sql = "DELETE FROM task WHERE id = :id";
+$params = [':id' => $id];
+$types = [':id' => PDO::PARAM_INT];
+dbQuery($sql, $params, $types);
 header('Location: /test_project/todo/api');

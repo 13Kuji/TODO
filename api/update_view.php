@@ -1,5 +1,5 @@
 <?php
-require_once ('connect.php');
+require_once ('include.php');
 
 $task_id = $_POST['id'];
 ?>
