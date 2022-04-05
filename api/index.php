@@ -1,7 +1,7 @@
 <?php
 require_once 'include.php';
 
-$sql='SELECT * FROM task';
+$sql = 'SELECT * FROM task';
 foreach(dbQuery($sql) as $rows){
     echo  $rows['title']."<br>".$rows['text']."<br>".$rows['time']."<br>"."<br>";
     ?>  <form action = "update_view.php" method = "post">
