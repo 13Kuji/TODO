@@ -12,14 +12,15 @@ Ext.define('todo.view.main.Main', {
     requires: [
         'Ext.plugin.Viewport',
         'Ext.window.MessageBox',
-
-        'todo.view.main.MainController',
         'todo.view.main.MainModel',
-        'todo.view.main.List'
+        'todo.view.main.gridList.List',
+        'todo.view.main.gridList.GridController',
+        'todo.view.main.window.AddWindow',
+        'todo.view.main.window.AddWindowController'
     ],
 
-    controller: 'main',
-    viewModel: 'main',
+    controller: ['main', 'grid', 'window'],
+    viewModel: ['main', 'window'],
 
     ui: 'navigation',
 

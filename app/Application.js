@@ -16,7 +16,7 @@ Ext.define('todo.Application', {
     },
 
     stores: [
-        // TODO: add global / shared stores here
+        'todo.store.Personnel'
     ],
 
     launch: function () {
