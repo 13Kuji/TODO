@@ -1,3 +1,5 @@
 /.idea
 /ext
 /build
+/build/
+/build/temp/
