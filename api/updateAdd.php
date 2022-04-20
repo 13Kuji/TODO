@@ -7,7 +7,6 @@ register_shutdown_function(function (){
     die();
 });
 $data = json_decode($_REQUEST['data'], true);
-
 extract(checkParams(
     $data,
     [
@@ -16,22 +15,21 @@ extract(checkParams(
     ])
 );
 var_dump($data);
-if (empty($id)) {
+if (empty($data['id'])) {
     $sql = "INSERT INTO task(title, text) 
             VALUES (:title, :text)";
 } else {
-    $sql = "UPDATE task SET 
-            title = :title, 
-            text = :text 
+    $sql = "UPDATE task SET
+            title = :title,
+            text = :text
         WHERE id = :id ";
-    $params = [
-        ':id' => (int)$data['id'],
-        ];
 }
 $params = [
+    ':id' => $data['id'],
     ':title' => $data['title'],
     ':text' => $data['text']
 ];
+var_dump($params);
 $types = [
     ':id' => PDO::PARAM_INT,
     ':title' => PDO::PARAM_STR,

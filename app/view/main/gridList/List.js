@@ -15,12 +15,13 @@ Ext.define('todo.view.main.gridList.List', {
         {
             xtype:'actioncolumn',
             width:50,
-             items: [
-            {
-                iconCls: 'x-fa fa-close',
-                tooltip: 'Delete',
-                handler: 'deleteColumn'
-            }],
+            items: [
+                {
+                    iconCls: 'x-fa fa-close',
+                    tooltip: 'Delete',
+                    handler: 'deleteConfirm'
+                }
+            ]
         },
         { text: 'Название', align: 'center', dataIndex: 'title', flex: 1 },
         { text: 'Описание', align: 'center', dataIndex: 'text', flex: 2 },

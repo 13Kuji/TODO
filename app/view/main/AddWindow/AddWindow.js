@@ -1,4 +1,4 @@
-Ext.define('todo.view.main.window.AddWindow', {
+Ext.define('todo.view.main.AddWindow.AddWindow', {
     extend: 'Ext.window.Window',
     controller: 'window',
     viewModel: 'window',

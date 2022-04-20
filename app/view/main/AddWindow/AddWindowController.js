@@ -1,4 +1,4 @@
-Ext.define('todo.view.main.window.AddWindowController', {
+Ext.define('todo.view.main.AddWindow.AddWindowController', {
     extend: 'Ext.app.ViewController',
 
     alias: 'controller.window',

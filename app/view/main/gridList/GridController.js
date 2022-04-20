@@ -5,7 +5,7 @@ Ext.define('todo.view.main.gridList.GridController', {
 
     createWindowUpgrade: function(item) {
         let rowRecord = item.getSelectionModel().getSelection()[0];
-        Ext.create('todo.view.main.window.AddWindow',{
+        Ext.create('todo.view.main.AddWindow.AddWindow',{
             viewModel:{
                 data: {
                     task:{
@@ -19,35 +19,25 @@ Ext.define('todo.view.main.gridList.GridController', {
     },
 
     createWindowAdd: function() {
-       Ext.create('todo.view.main.window.AddWindow',{
-           viewModel:{
-               data: {
-                   task:{
-                       id: null,
-                       title: null,
-                       text: null
-                   }
-               }
-           }
-       }).show();
+        Ext.create('todo.view.main.AddWindow.AddWindow',{
+            viewModel:{
+                data: {
+                    task:{
+                        id: null,
+                        title: null,
+                        text: null
+                    }
+                }
+            }
+        }).show();
     },
-    deleteColumn: function(grid, rowIndex) {
-        let store = grid.getStore();
-        var rec = grid.getStore().getAt(rowIndex);
-        Ext.Ajax.request({
-            method: 'POST',
-            url: '/test_project/todo/api/delete.php',
-            params: {
-                id: rec.id,
-            },
-            success: function () {
-                store.reload();
-            },
-            failure: function () {
-            },
-
-            autoLoad: true
-        })
-        alert("Удалить задачу " + "\"" + rec.get('title') + "\"" + "?");
+    deleteConfirm: function(grid, rowIndex) {
+        //const s = grid.getController();
+        const store = grid.getStore();
+        const rec = grid.getStore().getAt(rowIndex);
+        let a = Ext.create('todo.view.main.DeleteConfirm.DeleteConfirm',{
+            rec: rec
+        });
+        a.show();
     }
 })

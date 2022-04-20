@@ -15,12 +15,14 @@ Ext.define('todo.view.main.Main', {
         'todo.view.main.MainModel',
         'todo.view.main.gridList.List',
         'todo.view.main.gridList.GridController',
-        'todo.view.main.window.AddWindow',
-        'todo.view.main.window.AddWindowController'
+        'todo.view.main.AddWindow.AddWindow',
+        'todo.view.main.AddWindow.AddWindowController',
+        'todo.view.main.DeleteConfirm.DeleteConfirm',
+        'todo.view.main.DeleteConfirm.DeleteConfirmController',
     ],
 
     controller: ['main', 'grid', 'window'],
-    viewModel: ['main', 'window'],
+    viewModel: ['main', 'window',],
 
     ui: 'navigation',
 
