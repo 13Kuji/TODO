@@ -1,6 +1,6 @@
 Ext.define('todo.view.main.AddWindow.AddWindow', {
     extend: 'Ext.window.Window',
-    controller: 'window',
+    controller: 'addWindow',
     viewModel: 'window',
     title: 'Добавление/Обновление информации',
     width: 500,
@@ -10,7 +10,8 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
     layout: 'fit',
     plain: true,
     itemId: 'editWindow',
-
+    recordTask: null,
+    urlMethod: null,
     items: [
         {
             xtype: 'form',

@@ -1,13 +1,14 @@
 Ext.define('todo.view.main.AddWindow.AddWindowController', {
     extend: 'Ext.app.ViewController',
 
-    alias: 'controller.window',
+    alias: 'controller.addWindow',
 
-    addElement: function(btn) {
-        let window = btn.up('#editWindow')
+    addElement: function(btn,) {
+        const window = btn.up('#editWindow')
+        const urlMethod = this.getView().urlMethod;
         Ext.Ajax.request({
             method: 'POST',
-            url: '/test_project/todo/api/updateAdd.php',
+            url: urlMethod,
             params: {
                 data: JSON.stringify(this.getViewModel().data.task)
             },
@@ -15,10 +16,6 @@ Ext.define('todo.view.main.AddWindow.AddWindowController', {
                 Ext.ComponentQuery.query('mainlist')[0].getStore().reload()
                 window.close()
             },
-            failure: function () {
-            },
-
-            autoLoad: true
         })
     },
 })

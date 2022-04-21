@@ -17,10 +17,16 @@ Ext.define('todo.view.main.gridList.List', {
             width:50,
             items: [
                 {
+                    iconCls: 'x-fa fa-edit',
+                    tooltip: 'Edit',
+                    handler: 'createWindowUpdate'
+                },
+                {
                     iconCls: 'x-fa fa-close',
                     tooltip: 'Delete',
                     handler: 'deleteConfirm'
-                }
+                },
+
             ]
         },
         { text: 'Название', align: 'center', dataIndex: 'title', flex: 1 },
@@ -29,13 +35,10 @@ Ext.define('todo.view.main.gridList.List', {
     ],
     buttons: [
         {
-            align: 'left',
+            iconAlign: 'left',
             text: 'Добавить',
             handler: 'createWindowAdd'
         }
     ],
-    listeners: {
-        celldblclick: 'createWindowUpgrade'
-    }
 
 });

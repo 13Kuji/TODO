@@ -21,7 +21,7 @@ Ext.define('todo.view.main.Main', {
         'todo.view.main.DeleteConfirm.DeleteConfirmController',
     ],
 
-    controller: ['main', 'grid', 'window'],
+    controller: ['main', 'grid', 'addWindow', 'deleteConfirm'],
     viewModel: ['main', 'window',],
 
     ui: 'navigation',

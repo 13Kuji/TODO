@@ -3,23 +3,27 @@ Ext.define('todo.view.main.gridList.GridController', {
 
     alias: 'controller.gridController',
 
-    createWindowUpgrade: function(item) {
-        let rowRecord = item.getSelectionModel().getSelection()[0];
-        Ext.create('todo.view.main.AddWindow.AddWindow',{
+    createWindowUpdate: function(selectedColumn, lineIndex) {
+        const recordTask = selectedColumn.getStore().getAt(lineIndex);
+        let windowUpdate = Ext.create('todo.view.main.AddWindow.AddWindow',{
+            recordTask: recordTask,
+            urlMethod: '/test_project/todo/api/updateTask.php',
             viewModel:{
                 data: {
                     task:{
-                        id: rowRecord.get('id'),
-                        title: rowRecord.get('title'),
-                        text: rowRecord.get('text')
+                        id: recordTask.get('id'),
+                        title: recordTask.get('title'),
+                        text: recordTask.get('text')
                     }
                 }
             }
-        }).show();
+        });
+        windowUpdate.show();
     },
 
     createWindowAdd: function() {
-        Ext.create('todo.view.main.AddWindow.AddWindow',{
+        let windowAdd = Ext.create('todo.view.main.AddWindow.AddWindow',{
+            urlMethod: '/test_project/todo/api/addTask.php',
             viewModel:{
                 data: {
                     task:{
@@ -29,15 +33,15 @@ Ext.define('todo.view.main.gridList.GridController', {
                     }
                 }
             }
-        }).show();
-    },
-    deleteConfirm: function(grid, rowIndex) {
-        //const s = grid.getController();
-        const store = grid.getStore();
-        const rec = grid.getStore().getAt(rowIndex);
-        let a = Ext.create('todo.view.main.DeleteConfirm.DeleteConfirm',{
-            rec: rec
         });
-        a.show();
+        windowAdd.show();
+    },
+
+    deleteConfirm: function(selectedColumn, lineIndex) {
+        const recordTask = selectedColumn.getStore().getAt(lineIndex);
+        let windowDelete = Ext.create('todo.view.main.DeleteConfirm.DeleteConfirm',{
+            recordTask: recordTask
+        });
+        windowDelete.show();
     }
 })
