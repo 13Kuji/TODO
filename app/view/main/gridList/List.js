@@ -31,7 +31,7 @@ Ext.define('todo.view.main.gridList.List', {
         },
         { text: 'Название', align: 'center', dataIndex: 'title', flex: 1 },
         { text: 'Описание', align: 'center', dataIndex: 'text', flex: 2 },
-        { text: 'Время', align: 'center', dataIndex: 'time', flex: 0.6 }
+        { text: 'Время выполнения', align: 'center', dataIndex: 'execTime', xtype: 'datecolumn', format: 'd.m.Y H:i', flex: 0.6 }
     ],
     buttons: [
         {

@@ -4,7 +4,8 @@ Ext.define('todo.view.main.DeleteConfirm.DeleteConfirm', {
     itemId: 'deleteWindow',
     title : 'Delete',
     msg : "Вы точно хотите удалить задачу \" recordTask.title \" ",
-    width : 300,
+    width : 400,
+    height: 400,
     closable : false,
     recordTask: null,
     buttons: [

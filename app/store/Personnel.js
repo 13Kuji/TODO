@@ -4,7 +4,9 @@ Ext.define('todo.store.Personnel', {
     alias: 'store.personnel',
 
     fields: [
-        'title', 'text', 'time'
+        'title',
+        'text',
+        'execTime'
     ],
     proxy: {
         type: 'ajax',

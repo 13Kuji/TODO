@@ -4,7 +4,7 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
     viewModel: 'window',
     title: 'Добавление/Обновление информации',
     width: 500,
-    height: 300,
+    height: 450,
     minWidth: 300,
     minHeight: 220,
     layout: 'fit',
@@ -39,9 +39,28 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
                     xtype: 'textarea',
                     name: 'text',
                     labelAlign: 'top',
-                    flex: 1,
                     bind: {
                         value: '{task.text}'
+                    }
+                },
+                {
+                    fieldLabel: 'Дата выполнения:',
+                    xtype: 'datefield',
+                    name: 'dateEnd',
+                    labelAlign: 'top',
+                    format: 'd.m.Y',
+                    bind: {
+                        value: '{task.execTime.date}'
+                    }
+                },
+                {
+                    fieldLabel: 'Время выполнения:',
+                    xtype: 'timefield',
+                    name: 'timeEnd',
+                    labelAlign: 'top',
+                    format: 'H:i',
+                    bind: {
+                        value: '{task.execTime.time}'
                     }
                 }
             ]

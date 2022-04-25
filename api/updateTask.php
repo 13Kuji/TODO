@@ -7,7 +7,8 @@ extract(checkParams(
         $dataTask,
         [
             'title',
-            'text'
+            'text',
+            'execTime'
         ])
 );
 $sql = "UPDATE task SET
@@ -17,11 +18,13 @@ $sql = "UPDATE task SET
 $params = [
     ':id' => $id,
     ':title' => $title,
-    ':text' => $text
+    ':execTime' => $text,
+    ':time' => $time
 ];
 $types = [
     ':id' => PDO::PARAM_INT,
     ':title' => PDO::PARAM_STR,
-    ':text' => PDO::PARAM_STR
+    ':text' => PDO::PARAM_STR,
+    ':execTime' => PDO::PARAM_INT
 ];
 dbQuery($sql, $params, $types);
