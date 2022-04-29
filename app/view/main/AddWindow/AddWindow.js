@@ -45,6 +45,7 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
                 },
                 {
                     fieldLabel: 'Дата выполнения:',
+                    itemId: 'workDate',
                     xtype: 'datefield',
                     name: 'dateEnd',
                     labelAlign: 'top',
@@ -55,6 +56,7 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
                 },
                 {
                     fieldLabel: 'Время выполнения:',
+                    itemId: 'workTime',
                     xtype: 'timefield',
                     name: 'timeEnd',
                     labelAlign: 'top',
