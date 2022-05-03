@@ -1,6 +1,11 @@
 <?php
 
-class taskTodo
+
+namespace app;
+
+use PDO;
+
+class Task
 {
     public function add($request): void
     {
@@ -56,7 +61,7 @@ class taskTodo
                     'execTime'
                 ])
         );
-        var_dump($execTime);
+
         $sql = "UPDATE task SET
             title = :title,
             text = :text,

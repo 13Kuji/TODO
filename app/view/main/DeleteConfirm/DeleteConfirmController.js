@@ -8,7 +8,7 @@ Ext.define('todo.view.main.DeleteConfirm.DeleteConfirmController', {
         const recordTaskId = this.getView().recordTask.id;
         Ext.Ajax.request({
             method: 'POST',
-            url: '/test_project/todo/api/deleteTask.php',
+            url: '/test_project/todo/api/api.php?act=Task&method=delete',
             params: {
                 id: recordTaskId,
             },

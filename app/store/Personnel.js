@@ -10,7 +10,7 @@ Ext.define('todo.store.Personnel', {
     ],
     proxy: {
         type: 'ajax',
-        url : '/test_project/todo/api/getTasks.php',
+        url : '/test_project/todo/api/api.php?act=Task&method=get',
         reader: {
             type: 'json',
             rootProperty: 'rows'

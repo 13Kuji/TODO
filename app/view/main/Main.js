@@ -78,18 +78,19 @@ Ext.define('todo.view.main.Main', {
         }
     },
 
-    items: [{
+    items: [
+        {
+            title: 'Пользователь',
+            iconCls: 'fa-user',
+            bind: {
+                html: '{loremIpsum}'
+            }
+        },{
         title: 'Задачи',
         iconCls: 'fa-file',
         // The following grid shares a store with the classic version's grid as well!
         items: [{
             xtype: 'mainlist'
         }]
-    }, {
-        title: 'Пользователь',
-        iconCls: 'fa-user',
-        bind: {
-            html: '{loremIpsum}'
-        }
-    }]
+    }, ]
 });

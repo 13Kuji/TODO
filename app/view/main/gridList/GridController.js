@@ -8,7 +8,7 @@ Ext.define('todo.view.main.gridList.GridController', {
         const dateToUpdate = recordTask.get('execTime')
         let windowUpdate = Ext.create('todo.view.main.AddWindow.AddWindow',{
             recordTask: recordTask,
-            urlMethod: '/test_project/todo/api/updateTask.php',
+            urlMethod: '/test_project/todo/api/api.php?act=Task&method=update',
             viewModel:{
                 data: {
                     task:{
@@ -28,7 +28,7 @@ Ext.define('todo.view.main.gridList.GridController', {
 
     createWindowAdd: function() {
         let windowAdd = Ext.create('todo.view.main.AddWindow.AddWindow',{
-            urlMethod: '/test_project/todo/api/addTask.php',
+            urlMethod: '/test_project/todo/api/api.php?act=Task&method=add',
             viewModel:{
                 data: {
                     task:{
