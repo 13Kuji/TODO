@@ -4,7 +4,7 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
     viewModel: 'window',
     title: 'Добавление/Обновление информации',
     width: 500,
-    height: 450,
+    height: 525,
     minWidth: 300,
     minHeight: 220,
     layout: 'fit',
@@ -27,10 +27,24 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
             border: false,
             items: [
                 {
+                    xtype: 'combo',
+                    fieldLabel: 'Исполнитель:',
+                    labelAlign: 'top',
+                    displayField: 'name',
+                    valueField: 'name',
+                    //publishes: 'value',
+                    store: {
+                        type: 'user'
+                    },
+                    bind: {
+                        value: '{task.user}'
+                    }
+                },
+                {
                     fieldLabel: "Название:",
                     name: 'title',
                     labelAlign: 'top',
-                    bind:{
+                    bind: {
                         value: '{task.title}'
                     }
                 },

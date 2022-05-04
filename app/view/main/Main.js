@@ -19,10 +19,15 @@ Ext.define('todo.view.main.Main', {
         'todo.view.main.AddWindow.AddWindowController',
         'todo.view.main.DeleteConfirm.DeleteConfirm',
         'todo.view.main.DeleteConfirm.DeleteConfirmController',
+        'todo.view.main.User.UserView',
+        'todo.view.main.User.UserController',
+        'todo.view.main.Login.Login',
+        'todo.view.main.Login.LoginController',
+        'todo.view.main.Login.LoginModel',
     ],
 
-    controller: ['main', 'grid', 'addWindow', 'deleteConfirm'],
-    viewModel: ['main', 'window',],
+    controller: ['main', 'grid', 'addWindow', 'deleteConfirm', 'user', 'login'],
+    viewModel: ['main', 'window', 'register', 'login'],
 
     ui: 'navigation',
 
@@ -80,17 +85,22 @@ Ext.define('todo.view.main.Main', {
 
     items: [
         {
+            title: 'Задачи',
+            iconCls: 'fa-file',
+            items: [{
+                xtype: 'mainlist'
+            }]
+        },
+        {
             title: 'Пользователь',
             iconCls: 'fa-user',
-            bind: {
-                html: '{loremIpsum}'
+            items: [{
+                xtype: 'user'
+            }],
+            listeners: {
+                click: function() {
+                    Ext.Msg.alert('Success!', 'I was clicked!');
+                }
             }
-        },{
-        title: 'Задачи',
-        iconCls: 'fa-file',
-        // The following grid shares a store with the classic version's grid as well!
-        items: [{
-            xtype: 'mainlist'
         }]
-    }, ]
 });

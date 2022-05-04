@@ -5,7 +5,7 @@ namespace app;
 
 use PDO;
 
-class Task
+class User
 {
     public function add($request): void
     {
@@ -13,42 +13,36 @@ class Task
         extract(checkParams(
                 $dataTask,
                 [
-                    'user',
-                    'title',
-                    'text',
-                    'execTime'
+                    'name',
+                    'password'
                 ])
         );
-        $sql = "INSERT INTO task(user, title, text, time) 
-            VALUES (:user, :title, :text, :time)";
+        $sql = "INSERT INTO user(name, password) 
+            VALUES (:name, :password)";
         $params = [
-            ':user' => $user,
-            ':title' => $title,
-            ':text' => $text,
-            ':time' => $execTime
+            ':name' => $name,
+            ':password' => $password,
         ];
         $types = [
-            ':user' => PDO::PARAM_STR,
-            ':title' => PDO::PARAM_STR,
-            ':text' => PDO::PARAM_STR,
-            ':time' => PDO::PARAM_STR
+            ':name' => PDO::PARAM_STR,
+            ':password' => PDO::PARAM_STR,
         ];
         dbQuery($sql, $params, $types);
     }
 
     public function delete($request)
     {
-        $idTask = $request['id'];
-        checkParams($idTask, [0]);
-        $sql = "DELETE FROM task WHERE id = :id";
-        $params = [':id' => $idTask];
+        $idUser = $request['id'];
+        checkParams($idUser, [0]);
+        $sql = "DELETE FROM user WHERE id = :id";
+        $params = [':id' => $idUser];
         $types = [':id' => PDO::PARAM_INT];
         dbQuery($sql, $params, $types);
     }
 
     public function get($request)
     {
-        $sql = 'SELECT id, user, title, text, DATE_FORMAT(time, "%m.%d.%Y %H:%i") as execTime  FROM task';
+        $sql = 'SELECT name, password FROM user';
         $rowsTask = dbQuery($sql);
         echo json_encode(['success' => true, 'rows' => $rowsTask->fetchAll()]);
     }
@@ -59,7 +53,6 @@ class Task
         extract(checkParams(
                 $dataTask,
                 [
-                    'user',
                     'title',
                     'text',
                     'execTime'
@@ -67,21 +60,18 @@ class Task
         );
 
         $sql = "UPDATE task SET
-            user = :user,
             title = :title,
             text = :text,
             time = :time
         WHERE id = :id ";
         $params = [
             ':id' => $id,
-            ':user' => $user,
             ':title' => $title,
             ':text' => $text,
             ':time' => $execTime
         ];
         $types = [
             ':id' => PDO::PARAM_INT,
-            ':user' => PDO::PARAM_STR,
             ':title' => PDO::PARAM_STR,
             ':text' => PDO::PARAM_STR,
             ':time' => PDO::PARAM_STR

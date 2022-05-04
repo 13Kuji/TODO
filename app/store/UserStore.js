@@ -1,16 +1,15 @@
-Ext.define('todo.store.Personnel', {
+Ext.define('todo.store.UserStore', {
     extend: 'Ext.data.Store',
 
-    alias: 'store.personnel',
+    alias: 'store.user',
 
     fields: [
-        'title',
-        'text',
-        'execTime'
+        'name',
+        'password'
     ],
     proxy: {
         type: 'ajax',
-        url : '/test_project/todo/api/api.php?act=Task&method=get',
+        url : '/test_project/todo/api/api.php?act=User&method=get',
         reader: {
             type: 'json',
             rootProperty: 'rows'

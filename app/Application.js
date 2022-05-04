@@ -16,7 +16,8 @@ Ext.define('todo.Application', {
     },
 
     stores: [
-        'todo.store.Personnel'
+        'todo.store.TaskStore',
+        'todo.store.UserStore'
     ],
 
     launch: function () {

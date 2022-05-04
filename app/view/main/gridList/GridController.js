@@ -13,6 +13,7 @@ Ext.define('todo.view.main.gridList.GridController', {
                 data: {
                     task:{
                         id: recordTask.get('id'),
+                        user: recordTask.get('user'),
                         title: recordTask.get('title'),
                         text: recordTask.get('text'),
                         execTime: {
@@ -33,6 +34,7 @@ Ext.define('todo.view.main.gridList.GridController', {
                 data: {
                     task:{
                         id: null,
+                        user: null,
                         title: null,
                         text: null,
                         execTime: {
@@ -45,7 +47,6 @@ Ext.define('todo.view.main.gridList.GridController', {
         });
         windowAdd.show();
     },
-
     deleteConfirm: function(selectedColumn, lineIndex) {
         const recordTask = selectedColumn.getStore().getAt(lineIndex);
         let windowDelete = Ext.create('todo.view.main.DeleteConfirm.DeleteConfirm',{
