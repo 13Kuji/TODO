@@ -17,5 +17,5 @@ Ext.define('todo.store.TaskStore', {
             rootProperty: 'rows'
         }
     },
-    autoLoad: true
+    autoLoad: false
 });

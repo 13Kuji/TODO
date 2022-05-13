@@ -13,20 +13,18 @@ Ext.define('todo.view.main.Main', {
         'Ext.plugin.Viewport',
         'Ext.window.MessageBox',
         'todo.view.main.MainModel',
-        'todo.view.main.gridList.List',
+        'todo.view.main.gridList.Grid',
         'todo.view.main.gridList.GridController',
         'todo.view.main.AddWindow.AddWindow',
         'todo.view.main.AddWindow.AddWindowController',
         'todo.view.main.DeleteConfirm.DeleteConfirm',
         'todo.view.main.DeleteConfirm.DeleteConfirmController',
-        'todo.view.main.User.UserView',
-        'todo.view.main.User.UserController',
         'todo.view.main.Login.Login',
         'todo.view.main.Login.LoginController',
         'todo.view.main.Login.LoginModel',
     ],
 
-    controller: ['main', 'grid', 'addWindow', 'deleteConfirm', 'user', 'login'],
+    controller: ['main', 'grid', 'addWindow', 'deleteConfirm', 'login'],
     viewModel: ['main', 'window', 'register', 'login'],
 
     ui: 'navigation',
@@ -41,7 +39,7 @@ Ext.define('todo.view.main.Main', {
         },
         title: {
             bind: {
-                text: '{name}'
+                text: 'TODO'
             },
             flex: 0
         },
@@ -90,17 +88,6 @@ Ext.define('todo.view.main.Main', {
             items: [{
                 xtype: 'mainlist'
             }]
-        },
-        {
-            title: 'Пользователь',
-            iconCls: 'fa-user',
-            items: [{
-                xtype: 'user'
-            }],
-            listeners: {
-                click: function() {
-                    Ext.Msg.alert('Success!', 'I was clicked!');
-                }
-            }
-        }]
+        }
+    ]
 });

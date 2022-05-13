@@ -1,16 +1,22 @@
-Ext.define('todo.view.main.gridList.List', {
+Ext.define('todo.view.main.gridList.Grid', {
     extend: 'Ext.grid.Panel',
     xtype: 'mainlist',
-
-    requires: [
-        'todo.store.TaskStore'
-    ],
+    hidden: true,
     controller: 'gridController',
-    title: 'График задач',
-
     store: {
         type: 'task'
     },
+    title: 'График задач',
+    items: [
+        {
+            xtype: 'titlebar',
+            itemId: 'myTitle',
+            docked: 'top',
+            title: 'FFFFFFFFFFFFFF'
+        }
+    ],
+
+
     columns: [
         {
             xtype:'actioncolumn',
@@ -29,17 +35,27 @@ Ext.define('todo.view.main.gridList.List', {
 
             ]
         },
-        { text: 'Пользователь', align: 'center', dataIndex: 'user', flex: 1 },
+        { text: 'Пользователь', itemId: 'gridUserName', hidden: true, align: 'center', dataIndex: 'user',  flex: 1 },
         { text: 'Название', align: 'center', dataIndex: 'title', flex: 1 },
         { text: 'Описание', align: 'center', dataIndex: 'text', flex: 2 },
         { text: 'Время выполнения', align: 'center', dataIndex: 'execTime', xtype: 'datecolumn', format: 'd.m.Y H:i', flex: 0.6 }
     ],
     buttons: [
         {
-            iconAlign: 'left',
-            text: 'Добавить',
-            handler: 'createWindowAdd'
-        }
+            itemId: 'addButton',
+            text: 'Добавить задачу',
+            handler: 'createWindowAdd',
+
+
+        },
+        {
+            itemId: 'addRegButton',
+            hidden: true,
+            text: 'Создать пользователя',
+            handler: 'createReg',
+
+
+        },
     ],
 
 });

@@ -29,10 +29,11 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
                 {
                     xtype: 'combo',
                     fieldLabel: 'Исполнитель:',
+                    itemId: 'userSelectBox',
                     labelAlign: 'top',
                     displayField: 'name',
                     valueField: 'name',
-                    //publishes: 'value',
+                    hidden: true,
                     store: {
                         type: 'user'
                     },

@@ -1,22 +1,23 @@
 Ext.define('todo.view.main.Login.Login', {
     extend: 'Ext.window.Window',
-    xtype: 'login',
+    xtype:  'login',
     controller: 'login',
     viewModel: 'login',
     requires: [
-        'todo.store.UserStore'
+        'todo.store.UserStore',
+        'todo.store.TaskStore'
     ],
     store: {
-        type: 'user'
+        type: ['user', 'task']
     },
     itemId: 'logWindow',
     frame: true,
     title: 'Войти',
+    modal: true,
     width: 355,
 
     fieldDefaults: {
         labelAlign: 'right',
-        //msgTarget: 'side'
     },
 
     items: [{
@@ -31,7 +32,6 @@ Ext.define('todo.view.main.Login.Login', {
             {
                 fieldLabel: 'Имя',
                 name: 'user',
-                //emptyText: 'введите имя',
                 bind: {
                     value: '{user.name}'
                 }
@@ -39,7 +39,6 @@ Ext.define('todo.view.main.Login.Login', {
             {
                 fieldLabel: 'Пароль',
                 name: 'pass',
-                //emptyText: 'введите пароль',
                 inputType: 'password',
                 bind: {
                     value: '{user.password}'
@@ -48,7 +47,6 @@ Ext.define('todo.view.main.Login.Login', {
 
         ]
     }],
-
     buttons: [{
         text: 'Принять',
         handler: 'checkUser'

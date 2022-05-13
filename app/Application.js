@@ -21,8 +21,11 @@ Ext.define('todo.Application', {
     ],
 
     launch: function () {
-        // TODO - Launch the application
+        let windowLog = Ext.create('todo.view.main.Login.Login', {});
+        windowLog.show(function () {
+        })
     },
+
 
     onAppUpdate: function () {
         Ext.Msg.confirm('Application Update', 'This application has an update, reload?',
@@ -33,4 +36,4 @@ Ext.define('todo.Application', {
             }
         );
     }
-});
+})

@@ -3,27 +3,42 @@ Ext.define('todo.view.main.Login.LoginController', {
 
     alias: 'controller.login',
 
-    checkUser: function(btn, a) {
+    checkUser: function(btn, ) {
         const window = btn.up('#logWindow')
         let index = 0
-        let status = 0
+        let status = false
+        let dataStore = Ext.StoreManager.lookup('todo.store.UserStore')
         while (1){
-            const data = Ext.StoreManager.lookup('todo.store.UserStore').getAt(index);
-            if (data == null){
+            const defDataStore = dataStore.getAt(index)
+            if (defDataStore == null){
                 break;
             }
-            if ((data.get('name') === this.getViewModel().data.user.name)&&((data.get('password') === this.getViewModel().data.user.password))){
-                status = 1
+            if ((defDataStore.get('name') === this.getViewModel().data.user.name)&&((defDataStore.get('password') === this.getViewModel().data.user.password))){
+                status = true
                 break;
             }
             index++
         }
-        if (status === 1){
+        if (status === true){
             Ext.MessageBox.show({
                 title: 'Успешно',
                 msg: 'Вход в личный кабинет...',
                 buttons: Ext.MessageBox.OK,
             });
+            Ext.ComponentQuery.query('mainlist')[0].getStore().load()
+            if (dataStore.getAt(index).get('name') === 'admin'){
+                Ext.ComponentQuery.query('mainlist')[0].getStore()
+                Ext.ComponentQuery.query('#addRegButton')[0].show()
+                Ext.ComponentQuery.query('#gridUserName')[0].show()
+                //Ext.ComponentQuery.query('#userSelectBox')[0].show()
+            }
+            else {
+                Ext.ComponentQuery.query('mainlist')[0].getStore().filter('user',dataStore.getAt(index).get('name'))
+
+            }
+            Ext.ComponentQuery.query('mainlist')[0].setTitle(dataStore.getAt(index).get('name'));
+            Ext.ComponentQuery.query('mainlist')[0].show()
+
             window.close()
         }
         else {
@@ -35,14 +50,6 @@ Ext.define('todo.view.main.Login.LoginController', {
             window.close()
 
         }
-            // success: function () {
-            //     Ext.ComponentQuery.query('mainlist')[0].getStore().reload()
-            //     Ext.MessageBox.show({
-            //         title: 'Регистрация',
-            //         msg: 'Регистрация прошла успешно!',
-            //         buttons: Ext.MessageBox.OK,
-            //     });
-            //     window.close()
-            // },
     }
+
 })
