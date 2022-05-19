@@ -27,18 +27,19 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
             border: false,
             items: [
                 {
-                    xtype: 'combo',
+                    xtype: 'tagfield',
                     fieldLabel: 'Исполнитель:',
                     itemId: 'userSelectBox',
                     labelAlign: 'top',
                     displayField: 'name',
-                    valueField: 'name',
+                    valueField: 'id',
+                    filterPickList: true,
                     hidden: true,
                     store: {
                         type: 'user'
                     },
                     bind: {
-                        value: '{task.user}'
+                        value: '{task.currentUser}'
                     }
                 },
                 {

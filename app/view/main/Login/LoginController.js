@@ -25,20 +25,15 @@ Ext.define('todo.view.main.Login.LoginController', {
                 msg: 'Вход в личный кабинет...',
                 buttons: Ext.MessageBox.OK,
             });
-            Ext.ComponentQuery.query('mainlist')[0].getStore().load()
-            if (dataStore.getAt(index).get('name') === 'admin'){
-                Ext.ComponentQuery.query('mainlist')[0].getStore()
-                Ext.ComponentQuery.query('#addRegButton')[0].show()
-                Ext.ComponentQuery.query('#gridUserName')[0].show()
-                //Ext.ComponentQuery.query('#userSelectBox')[0].show()
+            Ext.ComponentQuery.query('mainlist')[0].getStore().proxy.extraParams = { id : dataStore.getAt(index).get('id')};
+            Ext.ComponentQuery.query('mainlist')[0].getStore().load();
+            if (dataStore.getAt(index).get('id') === 1){
+                Ext.ComponentQuery.query('#addRegButton')[0].show();
+                Ext.ComponentQuery.query('#gridUserName')[0].show();
             }
-            else {
-                Ext.ComponentQuery.query('mainlist')[0].getStore().filter('user',dataStore.getAt(index).get('name'))
-
-            }
+            todo.config.Global.setUser(dataStore.getAt(index).get('id'))
             Ext.ComponentQuery.query('mainlist')[0].setTitle(dataStore.getAt(index).get('name'));
-            Ext.ComponentQuery.query('mainlist')[0].show()
-
+            Ext.ComponentQuery.query('mainlist')[0].show();
             window.close()
         }
         else {

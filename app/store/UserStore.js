@@ -4,6 +4,7 @@ Ext.define('todo.store.UserStore', {
     alias: 'store.user',
 
     fields: [
+        'id',
         'name',
         'password'
     ],

@@ -7,16 +7,6 @@ Ext.define('todo.view.main.gridList.Grid', {
         type: 'task'
     },
     title: 'График задач',
-    items: [
-        {
-            xtype: 'titlebar',
-            itemId: 'myTitle',
-            docked: 'top',
-            title: 'FFFFFFFFFFFFFF'
-        }
-    ],
-
-
     columns: [
         {
             xtype:'actioncolumn',
@@ -35,10 +25,10 @@ Ext.define('todo.view.main.gridList.Grid', {
 
             ]
         },
-        { text: 'Пользователь', itemId: 'gridUserName', hidden: true, align: 'center', dataIndex: 'user',  flex: 1 },
+        { text: 'Пользователь', itemId: 'gridUserName', hidden: true, align: 'center', dataIndex: 'name',  flex: 1 },
         { text: 'Название', align: 'center', dataIndex: 'title', flex: 1 },
         { text: 'Описание', align: 'center', dataIndex: 'text', flex: 2 },
-        { text: 'Время выполнения', align: 'center', dataIndex: 'execTime', xtype: 'datecolumn', format: 'd.m.Y H:i', flex: 0.6 }
+        { text: 'Время выполнения', align: 'center', dataIndex: 'time', xtype: 'datecolumn', format: 'd.m.Y H:i', flex: 0.6 }
     ],
     buttons: [
         {

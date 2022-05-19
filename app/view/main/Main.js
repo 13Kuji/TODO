@@ -21,7 +21,7 @@ Ext.define('todo.view.main.Main', {
         'todo.view.main.DeleteConfirm.DeleteConfirmController',
         'todo.view.main.Login.Login',
         'todo.view.main.Login.LoginController',
-        'todo.view.main.Login.LoginModel',
+        'todo.view.main.Login.LoginModel'
     ],
 
     controller: ['main', 'grid', 'addWindow', 'deleteConfirm', 'login'],

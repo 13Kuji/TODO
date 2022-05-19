@@ -3,7 +3,7 @@ $connection = NULL;
 
 function createConnection()
 {
-    $connect = new PDO("mysql:host=localhost;dbname=scheduler", "root", "");
+    $connect = new PDO("mysql:host=localhost;dbname=scheduler","root", "");
     if (!$connect) {
         exit (PDO::errorInfo());
     }
@@ -18,17 +18,17 @@ function dbQuery($sql, $params = [], $types = [])
         $connection = createConnection();
     }
 
-    $stmt = $connection->prepare($sql);
+    $statement = $connection->prepare($sql);
     if (stripos('SELECT', $sql) === false || stripos('SELECT', $sql) !== false && !empty($params) && !empty($types)) {
-        $stmt = bindTypedParams($stmt, $params, $types);
+        $statement = bindTypedParams($statement, $params, $types);
     }
-    $stmt->execute();
+    $statement->execute();
 
     if (stripos('SELECT', $sql) !== false) {
-        return $stmt->fetchAll();
+        return $statement->fetchAll();
     }
 
-    return $stmt;
+    return $statement;
 }
 
 function bindTypedParams($stmt, $params, $types)
@@ -42,14 +42,14 @@ function bindTypedParams($stmt, $params, $types)
 
 function checkParams($request, $paramNames)
 {
-    $errorArray = new myException();
+    $errors = new myException();
     foreach ($paramNames as $paramName) {
         if (empty($request[$paramName])) {
-            $errorArray->error_empty_field($paramName);
+            $errors->errorEmptyField($paramName);
         }
     }
-    if ($errorArray->withErrors()) {
-        echo $errorArray->getErrors();
+    if ($errors->withErrors()) {
+        echo $errors->getErrors();
         die();
     }
 

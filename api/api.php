@@ -1,7 +1,9 @@
 <?php
 
+
 require_once('include.php');
 require_once('myException.php');
+
 
 extract(checkParams(
         $_REQUEST,

@@ -3,7 +3,7 @@ class myException extends Exception
 {
     private array $exceptions = [];
 
-    public function error_empty_field($fieldName){
+    public function errorEmptyField($fieldName){
         $this->exceptions[] = 'пустое поле ' . "\"$fieldName\"" . '!<br>';
     }
 

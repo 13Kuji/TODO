@@ -4,10 +4,12 @@ Ext.define('todo.store.TaskStore', {
     alias: 'store.task',
 
     fields: [
-        'user',
+        'userIds',
+        'name',
+        'taskId',
         'title',
         'text',
-        'execTime'
+        'time'
     ],
     proxy: {
         type: 'ajax',

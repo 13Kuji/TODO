@@ -15,14 +15,18 @@ Ext.define('todo.Application', {
         }
     },
 
+    requires: [
+        'todo.config.Global'
+    ],
+
     stores: [
         'todo.store.TaskStore',
         'todo.store.UserStore'
     ],
 
     launch: function () {
-        let windowLog = Ext.create('todo.view.main.Login.Login', {});
-        windowLog.show(function () {
+        let windowLogin = Ext.create('todo.view.main.Login.Login', {});
+        windowLogin.show(function () {
         })
     },
 
