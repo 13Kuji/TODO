@@ -1,7 +1,8 @@
 Ext.define('todo.view.main.AddWindow.AddWindow', {
     extend: 'Ext.window.Window',
+    xtype: 'addWindow',
     controller: 'addWindow',
-    viewModel: 'window',
+    viewModel: 'addWindow',
     title: 'Добавление/Обновление информации',
     width: 500,
     height: 525,
@@ -39,7 +40,7 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
                         type: 'user'
                     },
                     bind: {
-                        value: '{task.currentUser}'
+                        value: '{task.currentUsers}'
                     }
                 },
                 {
@@ -92,7 +93,7 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
         {
             text: 'Выйти',
             handler: function () {
-                this.up('window').close();
+                this.up('addWindow').close();
             }
         }]
 

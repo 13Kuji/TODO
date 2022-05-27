@@ -3,17 +3,10 @@ Ext.define('todo.store.TaskStore', {
 
     alias: 'store.task',
 
-    fields: [
-        'userIds',
-        'name',
-        'taskId',
-        'title',
-        'text',
-        'time'
-    ],
+    model: 'todo.model.TaskModel',
     proxy: {
         type: 'ajax',
-        url : '/test_project/todo/api/api.php?act=Task&method=get',
+        url : '/test_project/todo/api/api.php?act=Task&method=getUser',
         reader: {
             type: 'json',
             rootProperty: 'rows'

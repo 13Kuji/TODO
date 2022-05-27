@@ -7,9 +7,6 @@ Ext.define('todo.view.main.Login.Login', {
         'todo.store.UserStore',
         'todo.store.TaskStore'
     ],
-    store: {
-        type: ['user', 'task']
-    },
     itemId: 'logWindow',
     frame: true,
     title: 'Войти',

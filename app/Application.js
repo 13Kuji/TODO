@@ -23,11 +23,13 @@ Ext.define('todo.Application', {
         'todo.store.TaskStore',
         'todo.store.UserStore'
     ],
+    models: [
+        'todo.model.TaskModel'
+    ],
 
     launch: function () {
         let windowLogin = Ext.create('todo.view.main.Login.Login', {});
-        windowLogin.show(function () {
-        })
+        windowLogin.show()
     },
 
 

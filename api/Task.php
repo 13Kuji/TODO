@@ -1,63 +1,106 @@
 <?php
 
-
 namespace app;
 
 use PDO;
 
 class Task
 {
-    public function add($request): void
+
+    public function actWithTask($taskId, $title, $text, $time, $action): void
     {
-        register_shutdown_function(function () {
-            var_dump(error_get_last());
-            die();
-        });
-        checkParams($request, 'data');
-        $dataTask = json_decode($request['data'], true);
-        extract(checkParams(
-                $dataTask,
-                [
-                    'currentUser',
-                    'title',
-                    'text',
-                    'execTime'
-                ])
-        );
-        $sql = 'INSERT INTO task(title, text, time) 
-            VALUES (:title, :text, :time)';
         $params = [
             'title' => $title,
             'text' => $text,
-            'time' => $execTime
+            'time' => $time
         ];
         $types = [
             'title' => PDO::PARAM_STR,
             'text' => PDO::PARAM_STR,
             'time' => PDO::PARAM_STR
         ];
+
+        if ($action == 'add') {
+            $sql = 'INSERT INTO task(title, text, time) 
+            VALUES (:title, :text, :time)';
+        }
+        if ($action == 'update') {
+            $sql = "UPDATE task SET
+            title = :title,
+            text = :text,
+            time = :time
+            WHERE id = :id ";
+            $params = array_merge($params, ['id' => $taskId]);
+            $types = array_merge($types, ['id' => PDO::PARAM_INT]);
+        }
+
         dbQuery($sql, $params, $types);
-        global $connection;
-        $lastId = $connection->lastInsertId();
-        foreach ($currentUser as $currentUserId) {
+    }
+
+    public function actWithUsers($taskId, $users, $action): void
+    {
+        if ($action == 'delete') {
+            $sql = "DELETE FROM user_task WHERE task_id = :task_id and user_id = :user_id";
+        }
+
+        if ($action == 'add') {
             $sql = 'INSERT INTO user_task(task_id, user_id) 
             VALUES (:task_id, :user_id)';
-            $addParams = [
-                'task_id' => $lastId,
-                'user_id' => $currentUserId,
+        }
+
+        $types = [
+            'task_id' => PDO::PARAM_INT,
+            'user_id' => PDO::PARAM_INT
+        ];
+        foreach ($users as $idUser) {
+            $params = [
+                'task_id' => $taskId,
+                'user_id' => $idUser
             ];
-            var_dump($currentUserId);
-            $addTypes = [
-                'task_id' => PDO::PARAM_INT,
-                'user_id' => PDO::PARAM_INT,
-            ];
-            dbQuery($sql, $addParams, $addTypes);
+            dbQuery($sql, $params, $types);
         }
 
     }
-    public function update($request): void
+
+    public function add($request): void
     {
-        checkParams($request, 'data');
+        checkParams($request, ['data']);
+        $dataTask = json_decode($request['data'], true);
+        extract(checkParams(
+                $dataTask,
+                [
+                    'currentUsers',
+                    'title',
+                    'text',
+                    'execTime'
+                ])
+        );
+        $actionTask = 'add';
+
+        /** @var PDO $connection */
+        $connection = createConnection();
+        $connection->beginTransaction();
+
+        try {
+            $this->actWithTask( null, $title, $text, $execTime, $actionTask);
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollBack();
+            throw new \myException('Ошибка при создании задачи: ' . $e->getMessage(),);
+        }
+
+        global $connection;
+        $lastId = $connection->lastInsertId();
+
+        if (isset($lastId)) {
+            $actionUsers = 'add';
+            $this->actWithUsers($lastId, $currentUsers, $actionUsers);
+        }
+    }
+
+    public function updateTaskFromAdmin($request): void
+    {
+        checkParams($request, ['data']);
         $dataTask = json_decode($request['data'], true);
         extract(checkParams(
                 $dataTask,
@@ -65,123 +108,141 @@ class Task
                     'taskId',
                     'title',
                     'text',
-                    'execTime'
+                    'execTime',
+                    'currentUsers',
+                    'previousUsers'
                 ])
         );
-        $sql = "UPDATE task SET
-        title = :title,
-        text = :text,
-        time = :time
-        WHERE id = :id ";
-        $params = [
-            'id' => $taskId,
-            'title' => $title,
-            'text' => $text,
-            'time' => $execTime
-        ];
-        $types = [
-            'id' => PDO::PARAM_INT,
-            'title' => PDO::PARAM_STR,
-            'text' => PDO::PARAM_STR,
-            'time' => PDO::PARAM_STR
-        ];
-        dbQuery($sql, $params, $types);
+        $actionTask = 'update';
+
+        /** @var PDO $connection */
+        $connection = createConnection();
+        $connection->beginTransaction();
+
+        try {
+
+            $this->actWithTask($taskId, $title, $text, $execTime, $actionTask);
+            $deletedUsers = array_values(array_diff($previousUsers, $currentUsers));
+            $addedUsers = array_values(array_diff($currentUsers, $previousUsers));
+            if (!empty($deletedUsers[0])) {
+                $actionUsers = 'delete';
+                $this->actWithUsers($taskId, $deletedUsers, $actionUsers);
+            }
+            if (!empty($addedUsers[0])) {
+                $actionUsers = 'add';
+                $this->actWithUsers($taskId, $addedUsers, $actionUsers);
+                }
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollBack();
+            throw new \myException('Ошибка при обновлении пользователя: ' . $e->getMessage(),);
+        }
+    }
+
+    public function updateTaskFromUser($request): void
+    {
+        checkParams($request, ['data']);
+        $dataTask = json_decode($request['data'], true);
         extract(checkParams(
                 $dataTask,
                 [
-                    'currentUser',
-                    'previousUser',
+                    'taskId',
+                    'title',
+                    'text',
+                    'execTime',
                 ])
         );
-        $deletedUsers = array_values(array_diff($previousUser, $currentUser));
-        $addedUsers = array_values(array_diff($currentUser, $previousUser));
-        if ($deletedUsers[0] != null) {
-            foreach ($deletedUsers as $idDeletedUser) {
-                $sql = "DELETE FROM user_task WHERE task_id = :task_id and user_id = :user_id";
-                $delParams = [
-                    'task_id' => $taskId,
-                    'user_id' => $idDeletedUser
-                ];
-                $delTypes = [
-                    'task_id' => PDO::PARAM_INT,
-                    'user_id' => PDO::PARAM_INT
-                ];
-                dbQuery($sql, $delParams, $delTypes);
-            }
-        }
-        if ($addedUsers[0] != null) {
-            foreach ($addedUsers as $idNewUser) {
-                $sql = 'INSERT INTO user_task(task_id, user_id) 
-            VALUES (:task_id, :user_id)';
-                $addParams = [
-                    'task_id' => $taskId,
-                    'user_id' => $idNewUser
-                ];
-                $addTypes = [
-                    'task_id' => PDO::PARAM_INT,
-                    'user_id' => PDO::PARAM_INT
-                ];
-                dbQuery($sql, $addParams, $addTypes);
-            }
+        $actionTask = 'update';
+
+        /** @var PDO $connection */
+        $connection = createConnection();
+        $connection->beginTransaction();
+
+        try {
+            $this->actWithTask($taskId, $title, $text, $execTime, $actionTask);
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollBack();
+            throw new \myException('Ошибка при обновлении пользователя: ' . $e->getMessage(),);
         }
     }
+
     public function delete($request): void
     {
         $idTask = $request['id'];
-        checkParams($idTask,'id');
-        $sql = "DELETE FROM user_task WHERE task_id = :id";
-        $params = ['id' => $idTask];
-        $types = ['id' => PDO::PARAM_INT];
-        dbQuery($sql, $params, $types);
-        $sql = "DELETE FROM task WHERE id = :id";
-        dbQuery($sql, $params, $types);
+        checkParams($idTask, 'id');
+
+        /** @var PDO $connection */
+        $connection = createConnection();
+        $connection->beginTransaction();
+        try {
+
+            $sql = "DELETE FROM user_task WHERE task_id = :id";
+            $params = ['id' => $idTask];
+            $types = ['id' => PDO::PARAM_INT];
+            dbQuery($sql, $params, $types);
+
+            $sql = "DELETE FROM task WHERE id = :id";
+            dbQuery($sql, $params, $types);
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollBack();
+            throw new \myException('Ошибка при удалении пользователя: ' . $e->getMessage(),);
+        }
     }
 
-    public function get($request): void
+    public function combineUsersWithSameTask($rowsArray) : array
     {
-        $idUser = $request['id'];
-        checkParams($idUser,'id');
-        if ($idUser == 1){
-            $sql = 'SELECT user.id AS userId, name, task.id AS taskId, title, text, task.time FROM user
-            JOIN user_task ON user.id = user_task.user_id
-            JOIN task ON user_task.task_id = task.id';
-            $taskRows = dbQuery($sql);
 
-            $rowsArray = $taskRows->fetchAll();
-            $resultRows = [];
-            $countRowArray = count($rowsArray) - 1;
-            $checkedTaskIds = [];
-            for ($i = 0; $i <= $countRowArray; $i++) {
-                if (in_array($rowsArray[$i]['taskId'], $checkedTaskIds)) {
-                    continue;
-                }
-                $resultRows[$i]['userIds'] = [$rowsArray[$i]['userId']];
-                $resultRows[$i]['name'] = $rowsArray[$i]['name'];
-                $resultRows[$i]['taskId'] = $rowsArray[$i]['taskId'];
-                $resultRows[$i]['title'] = $rowsArray[$i]['title'];
-                $resultRows[$i]['text'] = $rowsArray[$i]['text'];
-                $resultRows[$i]['time'] = $rowsArray[$i]['time'];
-                if ($i !== $countRowArray) {
-                    for ($j = $i + 1; $j <= $countRowArray; $j++) {
-                        if ($rowsArray[$i]['taskId'] === $rowsArray[$j]['taskId']) {
-                            $resultRows[$i]['name'] = $resultRows[$i]['name'] . ', ' . $rowsArray[$j]['name'];
-                            $resultRows[$i]['userIds'][] = $rowsArray[$j]['userId'];
-                        }
+        $resultRows = [];
+        $countRowArray = count($rowsArray) - 1;
+        $checkedTaskIds = [];
+        for ($i = 0; $i <= $countRowArray; $i++) {
+            if (in_array($rowsArray[$i]['taskId'], $checkedTaskIds)) {
+                continue;
+            }
+            $resultRows[$i]['userIds'] = [$rowsArray[$i]['userId']];
+            $resultRows[$i]['name'] = $rowsArray[$i]['name'];
+            $resultRows[$i]['taskId'] = $rowsArray[$i]['taskId'];
+            $resultRows[$i]['title'] = $rowsArray[$i]['title'];
+            $resultRows[$i]['text'] = $rowsArray[$i]['text'];
+            $resultRows[$i]['time'] = $rowsArray[$i]['time'];
+            if ($i !== $countRowArray) {
+                for ($j = $i + 1; $j <= $countRowArray; $j++) {
+                    if ($rowsArray[$i]['taskId'] === $rowsArray[$j]['taskId']) {
+                        $resultRows[$i]['name'] = $resultRows[$i]['name'] . ', ' . $rowsArray[$j]['name'];
+                        $resultRows[$i]['userIds'][] = $rowsArray[$j]['userId'];
                     }
                 }
-                $checkedTaskIds[] = $rowsArray[$i]['taskId'];
             }
+            $checkedTaskIds[] = $rowsArray[$i]['taskId'];
         }
-        else {
-            $sql = 'SELECT task.id AS taskId, task.title, task.text, DATE_FORMAT(time, "%m.%d.%Y %H:%i") as time  
-                FROM task 
-                JOIN user_task ON task.id = user_task.task_id
-                JOIN user ON user_task.user_id = user.id
-                WHERE user.id = :id';
-            $params = ['id' => $idUser];
-            $types = ['id' => PDO::PARAM_INT];
-            $resultRows = dbQuery($sql, $params, $types)->fetchAll();
-        }
+        return $resultRows;
+    }
+
+    public function getAdmin(): void
+    {
+        $sql = 'SELECT user.id AS userId, name, task.id AS taskId, title, text, task.time FROM user
+            JOIN user_task ON user.id = user_task.user_id
+            JOIN task ON user_task.task_id = task.id';
+        $taskRows = dbQuery($sql);
+        $resultRows = $this->combineUsersWithSameTask($taskRows->fetchAll());
+
+        echo json_encode(['success' => true, 'rows' => array_values($resultRows)]);
+    }
+
+    public function getUser($request): void
+    {
+        $idUser = $request['id'];
+        checkParams($idUser, 'id');
+        $sql = 'SELECT task.id AS taskId, task.title, task.text, DATE_FORMAT(time, "%m.%d.%Y %H:%i") as time  
+        FROM task 
+        JOIN user_task ON task.id = user_task.task_id
+        JOIN user ON user_task.user_id = user.id
+        WHERE user.id = :id';
+        $params = ['id' => $idUser];
+        $types = ['id' => PDO::PARAM_INT];
+        $resultRows = dbQuery($sql, $params, $types)->fetchAll();
         echo json_encode(['success' => true, 'rows' => array_values($resultRows)]);
     }
 }

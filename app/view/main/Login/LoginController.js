@@ -8,6 +8,7 @@ Ext.define('todo.view.main.Login.LoginController', {
         let index = 0
         let status = false
         let dataStore = Ext.StoreManager.lookup('todo.store.UserStore')
+
         while (1){
             const defDataStore = dataStore.getAt(index)
             if (defDataStore == null){
@@ -19,23 +20,30 @@ Ext.define('todo.view.main.Login.LoginController', {
             }
             index++
         }
-        if (status === true){
+
+        if (status === true) {
             Ext.MessageBox.show({
                 title: 'Успешно',
                 msg: 'Вход в личный кабинет...',
                 buttons: Ext.MessageBox.OK,
             });
+            if (dataStore.getAt(index).get('id') === 1) {
+                Ext.ComponentQuery.query('mainlist')[0].getStore().proxy.url = '/test_project/todo/api/api.php?act=Task&method=getAdmin';
+            }
             Ext.ComponentQuery.query('mainlist')[0].getStore().proxy.extraParams = { id : dataStore.getAt(index).get('id')};
             Ext.ComponentQuery.query('mainlist')[0].getStore().load();
+
             if (dataStore.getAt(index).get('id') === 1){
                 Ext.ComponentQuery.query('#addRegButton')[0].show();
                 Ext.ComponentQuery.query('#gridUserName')[0].show();
             }
-            todo.config.Global.setUser(dataStore.getAt(index).get('id'))
+
+            todo.config.Global.setUserId(dataStore.getAt(index).get('id'))
             Ext.ComponentQuery.query('mainlist')[0].setTitle(dataStore.getAt(index).get('name'));
             Ext.ComponentQuery.query('mainlist')[0].show();
             window.close()
         }
+
         else {
             Ext.MessageBox.show({
                 title: 'Провал',
@@ -43,7 +51,6 @@ Ext.define('todo.view.main.Login.LoginController', {
                 buttons: Ext.MessageBox.OK,
             });
             window.close()
-
         }
     }
 

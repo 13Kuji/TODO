@@ -14,7 +14,7 @@ Ext.define('todo.view.main.AddWindow.AddWindowController', {
             method: 'POST',
             url: urlMethod,
             params: {
-                data: [JSON.stringify(this.getViewModel().data.task)]
+                data: JSON.stringify(this.getViewModel().data.task)
             },
             success: function () {
                 Ext.ComponentQuery.query('mainlist')[0].getStore().reload()

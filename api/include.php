@@ -1,4 +1,5 @@
 <?php
+
 $connection = NULL;
 
 function createConnection()
@@ -43,6 +44,7 @@ function bindTypedParams($stmt, $params, $types)
 function checkParams($request, $paramNames)
 {
     $errors = new myException();
+
     foreach ($paramNames as $paramName) {
         if (empty($request[$paramName])) {
             $errors->errorEmptyField($paramName);

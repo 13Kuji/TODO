@@ -3,78 +3,68 @@ Ext.define('todo.view.main.gridList.GridController', {
 
     alias: 'controller.gridController',
 
-    createWindowUpdate: function (selectedColumn, lineIndex) {
-        const recordTask = selectedColumn.getStore().getAt(lineIndex)
-        const dateToUpdate = recordTask.get('time')
-        let windowUpdate = Ext.create('todo.view.main.AddWindow.AddWindow', {
-            recordTask: recordTask,
-            urlMethod: '/test_project/todo/api/api.php?act=Task&method=update',
-            viewModel: {
-                data: {
-                    task: {
-                        taskId: recordTask.get('taskId'),
-                        previousUser: recordTask.get('userIds'),
-                        currentUser: recordTask.get('userIds'),
-                        title: recordTask.get('title'),
-                        text: recordTask.get('text'),
-                        execTime: {
-                            date: new Date(dateToUpdate),
-                            time: new Date(dateToUpdate)
-                        }
-                    }
-                }
-            }
-        })
-        if (todo.config.Global.getUser() === 1) {
-            Ext.ComponentQuery.query('#userSelectBox')[0].show()
+    const: adminId = 1,
+
+    createWindowUpdate: function (selectedColumn, lineIndex,) {
+        const recordTask = selectedColumn.getStore().getAt(lineIndex);
+        const dateToUpdate = recordTask.get('time');
+        let url = '/test_project/todo/api/api.php?act=Task&method=updateTaskFromUser';
+        if (todo.config.Global.getUserId() === adminId) {
+            url = '/test_project/todo/api/api.php?act=Task&method=updateTaskFromAdmin'
         }
-        windowUpdate.show();
+
+        let updateWindow = Ext.create('todo.view.main.AddWindow.AddWindow', {
+            recordTask: recordTask,
+            urlMethod: url,
+        })
+
+        let updateWindowVM = updateWindow.getViewModel();
+        updateWindowVM.set('task.taskId', recordTask.get('taskId'));
+        updateWindowVM.set('task.previousUsers', recordTask.get('userIds'));
+        updateWindowVM.set('task.currentUsers', recordTask.get('userIds'));
+        updateWindowVM.set('task.title', recordTask.get('title'));
+        updateWindowVM.set('task.text', recordTask.get('text'));
+        updateWindowVM.set('task.execTime.date', new Date(dateToUpdate));
+        updateWindowVM.set('task.execTime.time', new Date(dateToUpdate));
+
+        if (todo.config.Global.getUserId() === adminId) {
+            Ext.ComponentQuery.query('#userSelectBox')[0].show();
+        }
+        updateWindow.show();
     },
 
     createReg: function () {
-        let windowReg = Ext.create('todo.view.main.Registration.Register', {
-            viewModel: {
-                data: {
-                    user: {
-                        name: null,
-                        password: null
-                    }
-                }
-            }
+        let regWindow = Ext.create('todo.view.main.Registration.Register', )
+        regWindow.show();
+    },
+
+    createWindowAdd: function () {
+        let addWindow = Ext.create('todo.view.main.AddWindow.AddWindow', {
+            urlMethod: '/test_project/todo/api/api.php?act=Task&method=add',
         })
 
-        windowReg.show();
-    },
-    createWindowAdd: function () {
-        let windowAdd = Ext.create('todo.view.main.AddWindow.AddWindow', {
-            urlMethod: '/test_project/todo/api/api.php?act=Task&method=add',
-            viewModel: {
-                data: {
-                    task: {
-                        id: null,
-                        currentUser: todo.config.Global.getUser(),
-                        title: null,
-                        text: null,
-                        execTime: {
-                            date: new Date(),
-                            time: new Date()
-                        }
-                    }
-                }
-            }
-        })
-        if (todo.config.Global.getUser() === 1) {
-            Ext.ComponentQuery.query('#userSelectBox')[0].show()
-            windowAdd.getViewModel().data.task.currentUser = null
+        let addWindowVM = addWindow.getViewModel();
+        addWindowVM.set('task.execTime.date', new Date);
+        addWindowVM.set('task.execTime.time', new Date);
+        if (todo.config.Global.getUserId() === adminId) {
+            Ext.ComponentQuery.query('#userSelectBox')[0].show();
+            addWindowVM.set('task.currentUsers', null);
         }
-        windowAdd.show();
+        else {
+            addWindowVM.set('task.currentUsers', todo.config.Global.getUserId());
+        }
+
+        addWindow.show();
     },
+
     deleteConfirm: function (selectedColumn, lineIndex) {
         const recordTask = selectedColumn.getStore().getAt(lineIndex);
-        let idRecordTask = recordTask.getData().taskId
+        let idRecordTask = recordTask.getData().taskId;
+
         let windowDelete = Ext.create('todo.view.main.DeleteConfirm.DeleteConfirm', {
             recordTask: idRecordTask
         });
+
         windowDelete.show();
     }
 })

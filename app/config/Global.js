@@ -1,7 +1,7 @@
 Ext.define('todo.config.Global', {
         singleton: true,
         config: {
-            user: null
+            userId: null
         },
         constructor: function(config) {
             this.initConfig(config)

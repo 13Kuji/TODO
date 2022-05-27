@@ -13,6 +13,7 @@ Ext.define('todo.view.main.Main', {
         'Ext.plugin.Viewport',
         'Ext.window.MessageBox',
         'todo.view.main.MainModel',
+        'todo.model.TaskModel',
         'todo.view.main.gridList.Grid',
         'todo.view.main.gridList.GridController',
         'todo.view.main.AddWindow.AddWindow',
@@ -25,7 +26,7 @@ Ext.define('todo.view.main.Main', {
     ],
 
     controller: ['main', 'grid', 'addWindow', 'deleteConfirm', 'login'],
-    viewModel: ['main', 'window', 'register', 'login'],
+    viewModel: ['main', 'addWindow', 'register', 'login'],
 
     ui: 'navigation',
 

@@ -1,6 +1,5 @@
 Ext.define('todo.store.UserStore', {
     extend: 'Ext.data.Store',
-
     alias: 'store.user',
 
     fields: [
@@ -8,6 +7,7 @@ Ext.define('todo.store.UserStore', {
         'name',
         'password'
     ],
+
     proxy: {
         type: 'ajax',
         url : '/test_project/todo/api/api.php?act=User&method=get',

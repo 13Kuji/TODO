@@ -8,9 +8,10 @@ Ext.define('todo.view.main.Registration.RegisterController', {
         let index = 0
         let status = false
         let dataStore = Ext.StoreManager.lookup('todo.store.UserStore')
+
         while (1){
             const defDataStore = dataStore.getAt(index)
-            if (defDataStore == null){
+            if (defDataStore === null){
                 break;
             }
             if (defDataStore.get('name') === this.getViewModel().data.user.name){
@@ -19,6 +20,7 @@ Ext.define('todo.view.main.Registration.RegisterController', {
             }
             index++
         }
+
         if (status === true) {
             Ext.MessageBox.show({
                 title: 'Упс...',
@@ -26,6 +28,7 @@ Ext.define('todo.view.main.Registration.RegisterController', {
                 buttons: Ext.MessageBox.OK,
             })
         }
+
         else {
             Ext.Ajax.request({
                 method: 'POST',
