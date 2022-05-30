@@ -8,14 +8,14 @@ Ext.define('todo.view.main.gridList.GridController', {
     createWindowUpdate: function (selectedColumn, lineIndex,) {
         const recordTask = selectedColumn.getStore().getAt(lineIndex);
         const dateToUpdate = recordTask.get('time');
-        let url = '/test_project/todo/api/api.php?act=Task&method=updateTaskFromUser';
+        let url = '/test_project/todo/api/api.php?act=Task&method=updateFromUser';
         if (todo.config.Global.getUserId() === adminId) {
-            url = '/test_project/todo/api/api.php?act=Task&method=updateTaskFromAdmin'
+            url = '/test_project/todo/api/api.php?act=Task&method=updateFromAdmin'
         }
 
         let updateWindow = Ext.create('todo.view.main.AddWindow.AddWindow', {
             recordTask: recordTask,
-            urlMethod: url,
+            methodUrl: url,
         })
 
         let updateWindowVM = updateWindow.getViewModel();
@@ -40,8 +40,8 @@ Ext.define('todo.view.main.gridList.GridController', {
 
     createWindowAdd: function () {
         let addWindow = Ext.create('todo.view.main.AddWindow.AddWindow', {
-            urlMethod: '/test_project/todo/api/api.php?act=Task&method=add',
-        })
+            methodUrl: '/test_project/todo/api/api.php?act=Task&method=add',
+        });
 
         let addWindowVM = addWindow.getViewModel();
         addWindowVM.set('task.execTime.date', new Date);

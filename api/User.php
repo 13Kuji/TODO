@@ -3,6 +3,7 @@
 
 namespace app;
 
+use myException;
 use PDO;
 
 class User
@@ -37,11 +38,11 @@ class User
         $connection->commit();
         } catch (\Exception $e) {
             $connection->rollBack();
-            throw new \myException('Ошибка при удалении пользователя: ' . $e->getMessage(),);
+            throw new myException('Ошибка при удалении пользователя: ' . $e->getMessage(),);
         }
     }
 
-    public function get($request): void
+    public function getAll($request): void
     {
         $sql = 'SELECT id, name, password FROM user';
         $rowsTask = dbQuery($sql);

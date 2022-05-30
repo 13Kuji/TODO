@@ -7,7 +7,7 @@ use PDO;
 class Task
 {
 
-    public function actWithTask($taskId, $title, $text, $time, $action): void
+    public function addOrUpdateTaskByAction($taskId, $title, $text, $time, $action): void
     {
         $params = [
             'title' => $title,
@@ -37,7 +37,7 @@ class Task
         dbQuery($sql, $params, $types);
     }
 
-    public function actWithUsers($taskId, $users, $action): void
+    public function addOrDeleteUserByAction($taskId, $users, $action): void
     {
         if ($action === 'delete') {
             $sql = "DELETE FROM user_task WHERE task_id = :task_id and user_id = :user_id";
@@ -82,7 +82,7 @@ class Task
         $connection->beginTransaction();
 
         try {
-            $this->actWithTask( null, $title, $text, $execTime, $actionTask);
+            $this->addOrUpdateTaskByAction( null, $title, $text, $execTime, $actionTask);
             $connection->commit();
         } catch (\Exception $e) {
             $connection->rollBack();
@@ -94,11 +94,11 @@ class Task
 
         if (isset($lastId)) {
             $actionUsers = 'add';
-            $this->actWithUsers($lastId, $currentUsers, $actionUsers);
+            $this->addOrDeleteUserByAction($lastId, $currentUsers, $actionUsers);
         }
     }
 
-    public function updateTaskFromAdmin($request): void
+    public function updateFromAdmin($request): void
     {
         checkParams($request, ['data']);
         $dataTask = json_decode($request['data'], true);
@@ -121,16 +121,16 @@ class Task
 
         try {
 
-            $this->actWithTask($taskId, $title, $text, $execTime, $actionTask);
+            $this->addOrUpdateTaskByAction($taskId, $title, $text, $execTime, $actionTask);
             $deletedUsers = array_values(array_diff($previousUsers, $currentUsers));
             $addedUsers = array_values(array_diff($currentUsers, $previousUsers));
             if (!empty($deletedUsers[0])) {
                 $actionUsers = 'delete';
-                $this->actWithUsers($taskId, $deletedUsers, $actionUsers);
+                $this->addOrDeleteUserByAction($taskId, $deletedUsers, $actionUsers);
             }
             if (!empty($addedUsers[0])) {
                 $actionUsers = 'add';
-                $this->actWithUsers($taskId, $addedUsers, $actionUsers);
+                $this->addOrDeleteUserByAction($taskId, $addedUsers, $actionUsers);
                 }
             $connection->commit();
         } catch (\Exception $e) {
@@ -139,7 +139,7 @@ class Task
         }
     }
 
-    public function updateTaskFromUser($request): void
+    public function updateFromUser($request): void
     {
         checkParams($request, ['data']);
         $dataTask = json_decode($request['data'], true);
@@ -159,7 +159,7 @@ class Task
         $connection->beginTransaction();
 
         try {
-            $this->actWithTask($taskId, $title, $text, $execTime, $actionTask);
+            $this->addOrUpdateTaskByAction($taskId, $title, $text, $execTime, $actionTask);
             $connection->commit();
         } catch (\Exception $e) {
             $connection->rollBack();
@@ -193,7 +193,6 @@ class Task
 
     public function combineUsersWithSameTask($rowsArray) : array
     {
-
         $resultRows = [];
         $countRowArray = count($rowsArray) - 1;
         $checkedTaskIds = [];
@@ -220,20 +219,20 @@ class Task
         return $resultRows;
     }
 
-    public function getAdmin(): void
+    public function getAll(): void
     {
-        $sql = file_get_contents(__DIR__.'/sql/getAdminGrid.sql');
+        $sql = file_get_contents(__DIR__ . '/sql/getAllTasks.sql');
         $taskRows = dbQuery($sql);
         $resultRows = $this->combineUsersWithSameTask($taskRows->fetchAll());
 
         echo json_encode(['success' => true, 'rows' => array_values($resultRows)]);
     }
 
-    public function getUser($request): void
+    public function getAllForUser($request): void
     {
         $idUser = $request['id'];
         checkParams($idUser, 'id');
-        $sql = file_get_contents(__DIR__.'/sql/getUserGrid.sql');
+        $sql = file_get_contents(__DIR__ . '/sql/getUserTasks.sql');
         $params = ['id' => $idUser];
         $types = ['id' => PDO::PARAM_INT];
         $resultRows = dbQuery($sql, $params, $types)->fetchAll();

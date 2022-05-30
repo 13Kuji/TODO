@@ -3,7 +3,7 @@ Ext.define('todo.view.main.Registration.RegisterController', {
 
     alias: 'controller.register',
 
-    ajaxQuery: function (activeWindow) {
+    sendRegistrationAjax: function (activeWindow) {
         Ext.Ajax.request({
             method: 'POST',
             url: '/test_project/todo/api/api.php?act=User&method=add',
@@ -22,7 +22,7 @@ Ext.define('todo.view.main.Registration.RegisterController', {
         })
     },
 
-    failMessage: function () {
+    sendFailMessage: function () {
         Ext.MessageBox.show({
             title: 'Упс...',
             msg: 'Такое имя пользователя уже существует',
@@ -49,10 +49,10 @@ Ext.define('todo.view.main.Registration.RegisterController', {
         }
 
         if (status === true) {
-            this.failMessage();
+            this.sendFailMessage();
         }
         else {
-            this.ajaxQuery(regWindow);
+            this.sendRegistrationAjax(regWindow);
         }
     },
 })

@@ -3,16 +3,16 @@ Ext.define('todo.view.main.AddWindow.AddWindowController', {
 
     alias: 'controller.addWindow',
 
-    addElement: function(btn,) {
+    addElement: function(btn) {
         const window = btn.up('#editWindow')
-        const urlMethod = this.getView().urlMethod;
-        const dateToCheck = Ext.Date.format(this.getViewModel().data.task.execTime.date, 'Y-m-d');
-        const timeToCheck = Ext.Date.format(this.getViewModel().data.task.execTime.time, 'H:i');
-        this.getViewModel().data.task.execTime = dateToCheck + " " + timeToCheck;
+        const methodUrl = this.getView().methodUrl;
+        const execDate = Ext.Date.format(this.getViewModel().data.task.execTime.date, 'Y-m-d');
+        const execTime = Ext.Date.format(this.getViewModel().data.task.execTime.time, 'H:i');
+        this.getViewModel().data.task.execTime = execDate + " " + execTime;
 
         Ext.Ajax.request({
             method: 'POST',
-            url: urlMethod,
+            url: methodUrl,
             params: {
                 data: JSON.stringify(this.getViewModel().data.task)
             },

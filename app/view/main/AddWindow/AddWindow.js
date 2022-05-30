@@ -12,7 +12,7 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
     plain: true,
     itemId: 'editWindow',
     recordTask: null,
-    urlMethod: null,
+    methodUrl: null,
     items: [
         {
             xtype: 'form',

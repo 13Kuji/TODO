@@ -6,8 +6,6 @@ Ext.define('todo.view.main.Registration.Register', {
     itemId: 'regWindow',
     frame: true,
     title: 'Регистрация',
-    //bodyPadding: 10,
-    //scrollable:true,
     width: 355,
 
     fieldDefaults: {

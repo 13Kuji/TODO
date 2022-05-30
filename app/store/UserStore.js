@@ -10,7 +10,7 @@ Ext.define('todo.store.UserStore', {
 
     proxy: {
         type: 'ajax',
-        url : '/test_project/todo/api/api.php?act=User&method=get',
+        url : '/test_project/todo/api/api.php?act=User&method=getAll',
         reader: {
             type: 'json',
             rootProperty: 'rows'

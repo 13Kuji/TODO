@@ -3,14 +3,14 @@ Ext.define('todo.view.main.Login.LoginController', {
 
     alias: 'controller.login',
 
-    successLogin: function (dataStore, index, activeWindow) {
+    onSuccessLogin: function (dataStore, index, activeWindow) {
         Ext.MessageBox.show({
             title: 'Успешно',
             msg: 'Вход в личный кабинет...',
             buttons: Ext.MessageBox.OK,
         });
         if (dataStore.getAt(index).get('id') === 1) {
-            Ext.ComponentQuery.query('mainlist')[0].getStore().proxy.url = '/test_project/todo/api/api.php?act=Task&method=getAdmin';
+            Ext.ComponentQuery.query('mainlist')[0].getStore().proxy.url = '/test_project/todo/api/api.php?act=Task&method=getAll';
         }
         Ext.ComponentQuery.query('mainlist')[0].getStore().proxy.extraParams = { id : dataStore.getAt(index).get('id')};
         Ext.ComponentQuery.query('mainlist')[0].getStore().load();
@@ -20,44 +20,43 @@ Ext.define('todo.view.main.Login.LoginController', {
             Ext.ComponentQuery.query('#gridUserName')[0].show();
         }
 
-        todo.config.Global.setUserId(dataStore.getAt(index).get('id'))
+        todo.config.Global.setUserId(dataStore.getAt(index).get('id'));
         Ext.ComponentQuery.query('mainlist')[0].setTitle(dataStore.getAt(index).get('name'));
         Ext.ComponentQuery.query('mainlist')[0].show();
-        activeWindow.close()
+        activeWindow.close();
     },
 
-    failLogin: function (activeWindow) {
+    sendLoginFailureMessage: function (activeWindow) {
         Ext.MessageBox.show({
-            title: 'Провал',
-            msg: 'Проверьте данные!',
+            title: 'Ошибка',
+            msg: 'Проверьте данные для входа!',
             buttons: Ext.MessageBox.OK,
         });
-        activeWindow.close()
-
+        activeWindow.close();
     },
 
     checkUser: function(btn, ) {
-        const logWindow = btn.up('#logWindow')
-        let index = 0
-        let status = false
-        let dataStore = Ext.StoreManager.lookup('todo.store.UserStore')
+        const logWindow = btn.up('#logWindow');
+        let index = 0;
+        let status = false;
+        let dataStore = Ext.StoreManager.lookup('todo.store.UserStore');
 
         while (1){
-            const defDataStore = dataStore.getAt(index)
+            const defDataStore = dataStore.getAt(index);
             if (defDataStore == null){
                 break;
             }
             if ((defDataStore.get('name') === this.getViewModel().data.user.name)&&((defDataStore.get('password') === this.getViewModel().data.user.password))){
-                status = true
+                status = true;
                 break;
             }
-            index++
+            index++;
         }
 
         if (status === true) {
-            this.successLogin(dataStore, index, logWindow);
+            this.onSuccessLogin(dataStore, index, logWindow);
         } else {
-            this.failLogin(logWindow);
+            this.sendLoginFailureMessage(logWindow);
         }
     }
 
