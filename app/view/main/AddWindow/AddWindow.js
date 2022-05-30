@@ -85,6 +85,7 @@ Ext.define('todo.view.main.AddWindow.AddWindow', {
             ]
         }
     ],
+
     buttons: [
         {
             text: 'Принять',

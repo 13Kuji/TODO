@@ -12,7 +12,6 @@ Ext.define('todo.view.main.Registration.Register', {
 
     fieldDefaults: {
         labelAlign: 'right',
-        //msgTarget: 'side'
     },
 
     items: [{
@@ -27,7 +26,6 @@ Ext.define('todo.view.main.Registration.Register', {
             {
                 fieldLabel: 'Имя',
                 name: 'user',
-                //emptyText: 'введите имя',
                 bind: {
                     value: '{user.name}'
                 }
@@ -35,7 +33,6 @@ Ext.define('todo.view.main.Registration.Register', {
             {
                 fieldLabel: 'Пароль',
                 name: 'pass',
-                //emptyText: 'введите пароль',
                 inputType: 'password',
                 bind: {
                     value: '{user.password}'

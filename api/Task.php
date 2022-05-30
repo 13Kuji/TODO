@@ -20,11 +20,11 @@ class Task
             'time' => PDO::PARAM_STR
         ];
 
-        if ($action == 'add') {
+        if ($action === 'add') {
             $sql = 'INSERT INTO task(title, text, time) 
             VALUES (:title, :text, :time)';
         }
-        if ($action == 'update') {
+        if ($action === 'update') {
             $sql = "UPDATE task SET
             title = :title,
             text = :text,
@@ -39,11 +39,11 @@ class Task
 
     public function actWithUsers($taskId, $users, $action): void
     {
-        if ($action == 'delete') {
+        if ($action === 'delete') {
             $sql = "DELETE FROM user_task WHERE task_id = :task_id and user_id = :user_id";
         }
 
-        if ($action == 'add') {
+        if ($action === 'add') {
             $sql = 'INSERT INTO user_task(task_id, user_id) 
             VALUES (:task_id, :user_id)';
         }
@@ -52,10 +52,10 @@ class Task
             'task_id' => PDO::PARAM_INT,
             'user_id' => PDO::PARAM_INT
         ];
-        foreach ($users as $idUser) {
+        foreach ($users as $userId) {
             $params = [
                 'task_id' => $taskId,
-                'user_id' => $idUser
+                'user_id' => $userId
             ];
             dbQuery($sql, $params, $types);
         }
@@ -222,9 +222,7 @@ class Task
 
     public function getAdmin(): void
     {
-        $sql = 'SELECT user.id AS userId, name, task.id AS taskId, title, text, task.time FROM user
-            JOIN user_task ON user.id = user_task.user_id
-            JOIN task ON user_task.task_id = task.id';
+        $sql = file_get_contents(__DIR__.'/sql/getAdminGrid.sql');
         $taskRows = dbQuery($sql);
         $resultRows = $this->combineUsersWithSameTask($taskRows->fetchAll());
 
@@ -235,11 +233,7 @@ class Task
     {
         $idUser = $request['id'];
         checkParams($idUser, 'id');
-        $sql = 'SELECT task.id AS taskId, task.title, task.text, DATE_FORMAT(time, "%m.%d.%Y %H:%i") as time  
-        FROM task 
-        JOIN user_task ON task.id = user_task.task_id
-        JOIN user ON user_task.user_id = user.id
-        WHERE user.id = :id';
+        $sql = file_get_contents(__DIR__.'/sql/getUserGrid.sql');
         $params = ['id' => $idUser];
         $types = ['id' => PDO::PARAM_INT];
         $resultRows = dbQuery($sql, $params, $types)->fetchAll();

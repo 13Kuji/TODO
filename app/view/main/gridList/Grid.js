@@ -63,8 +63,6 @@ Ext.define('todo.view.main.gridList.Grid', {
             hidden: true,
             text: 'Создать пользователя',
             handler: 'createReg',
-
-
         },
     ],
 
