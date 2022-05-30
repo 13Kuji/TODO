@@ -120,7 +120,6 @@ class Task
         $connection->beginTransaction();
 
         try {
-
             $this->addOrUpdateTaskByAction($taskId, $title, $text, $execTime, $actionTask);
             $deletedUsers = array_values(array_diff($previousUsers, $currentUsers));
             $addedUsers = array_values(array_diff($currentUsers, $previousUsers));
@@ -131,7 +130,7 @@ class Task
             if (!empty($addedUsers[0])) {
                 $actionUsers = 'add';
                 $this->addOrDeleteUserByAction($taskId, $addedUsers, $actionUsers);
-                }
+            }
             $connection->commit();
         } catch (\Exception $e) {
             $connection->rollBack();
@@ -176,7 +175,6 @@ class Task
         $connection = createConnection();
         $connection->beginTransaction();
         try {
-
             $sql = "DELETE FROM user_task WHERE task_id = :id";
             $params = ['id' => $idTask];
             $types = ['id' => PDO::PARAM_INT];

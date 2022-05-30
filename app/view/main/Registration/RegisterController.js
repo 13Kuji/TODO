@@ -36,7 +36,7 @@ Ext.define('todo.view.main.Registration.RegisterController', {
         let status = false
         let dataStore = Ext.StoreManager.lookup('todo.store.UserStore')
 
-        while (1){
+        while (true){
             const defDataStore = dataStore.getAt(index)
             if (defDataStore === null){
                 break;

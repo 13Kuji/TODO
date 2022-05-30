@@ -35,13 +35,13 @@ Ext.define('todo.view.main.Login.LoginController', {
         activeWindow.close();
     },
 
-    checkUser: function(btn, ) {
+    checkUser: function(btn) {
         const logWindow = btn.up('#logWindow');
         let index = 0;
         let status = false;
         let dataStore = Ext.StoreManager.lookup('todo.store.UserStore');
 
-        while (1){
+        while (true){
             const defDataStore = dataStore.getAt(index);
             if (defDataStore == null){
                 break;
