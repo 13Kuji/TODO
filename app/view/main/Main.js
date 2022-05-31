@@ -12,14 +12,21 @@ Ext.define('todo.view.main.Main', {
     requires: [
         'Ext.plugin.Viewport',
         'Ext.window.MessageBox',
-
-        'todo.view.main.MainController',
         'todo.view.main.MainModel',
-        'todo.view.main.List'
+        'todo.model.TaskModel',
+        'todo.view.main.gridList.Grid',
+        'todo.view.main.gridList.GridController',
+        'todo.view.main.AddWindow.AddWindow',
+        'todo.view.main.AddWindow.AddWindowController',
+        'todo.view.main.DeleteConfirm.DeleteConfirm',
+        'todo.view.main.DeleteConfirm.DeleteConfirmController',
+        'todo.view.main.Login.Login',
+        'todo.view.main.Login.LoginController',
+        'todo.view.main.Login.LoginModel'
     ],
 
-    controller: 'main',
-    viewModel: 'main',
+    controller: ['main', 'grid', 'addWindow', 'deleteConfirm', 'login'],
+    viewModel: ['main', 'addWindow', 'register', 'login'],
 
     ui: 'navigation',
 
@@ -33,7 +40,7 @@ Ext.define('todo.view.main.Main', {
         },
         title: {
             bind: {
-                text: '{name}'
+                text: 'TODO'
             },
             flex: 0
         },
@@ -75,30 +82,13 @@ Ext.define('todo.view.main.Main', {
         }
     },
 
-    items: [{
-        title: 'Home',
-        iconCls: 'fa-home',
-        // The following grid shares a store with the classic version's grid as well!
-        items: [{
-            xtype: 'mainlist'
-        }]
-    }, {
-        title: 'Users',
-        iconCls: 'fa-user',
-        bind: {
-            html: '{loremIpsum}'
+    items: [
+        {
+            title: 'Задачи',
+            iconCls: 'fa-file',
+            items: [{
+                xtype: 'mainlist'
+            }]
         }
-    }, {
-        title: 'Groups',
-        iconCls: 'fa-users',
-        bind: {
-            html: '{loremIpsum}'
-        }
-    }, {
-        title: 'Settings',
-        iconCls: 'fa-cog',
-        bind: {
-            html: '{loremIpsum}'
-        }
-    }]
+    ]
 });

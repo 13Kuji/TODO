@@ -15,13 +15,23 @@ Ext.define('todo.Application', {
         }
     },
 
+    requires: [
+        'todo.config.Global'
+    ],
+
     stores: [
-        // TODO: add global / shared stores here
+        'todo.store.TaskStore',
+        'todo.store.UserStore'
+    ],
+    models: [
+        'todo.model.TaskModel'
     ],
 
     launch: function () {
-        // TODO - Launch the application
+        let windowLogin = Ext.create('todo.view.main.Login.Login', {});
+        windowLogin.show()
     },
+
 
     onAppUpdate: function () {
         Ext.Msg.confirm('Application Update', 'This application has an update, reload?',
@@ -32,4 +42,4 @@ Ext.define('todo.Application', {
             }
         );
     }
-});
+})
