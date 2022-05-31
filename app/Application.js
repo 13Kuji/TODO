@@ -28,8 +28,8 @@ Ext.define('todo.Application', {
     ],
 
     launch: function () {
-        let windowLogin = Ext.create('todo.view.main.Login.Login', {});
-        windowLogin.show()
+        let loginWindow = Ext.create('todo.view.main.Login.Login', {});
+        loginWindow.show()
     },
 
 
